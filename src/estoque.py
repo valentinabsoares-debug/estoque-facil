@@ -1,8 +1,9 @@
 """Módulo principal de controle de estoque."""
 
+from datetime import datetime
+
 import json
 import os
-from datetime import datetime
 
 
 ARQUIVO_ESTOQUE = "estoque.json"
