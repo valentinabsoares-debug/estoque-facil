@@ -1,0 +1,23 @@
+[project]
+name = "estoque-facil"
+version = "1.0.0"
+description = "Controle de estoque simples para microempreendedores"
+authors = [{ name = "Valentina B. Soares", email = "valentina.bsoares@sempreceub.com" }]
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+estoque-facil = "main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = []
