@@ -18,7 +18,7 @@ LINHA = "─" * 55
 
 def cabecalho():
     print(f"\n{'═' * 55}")
-    print("         📦  ESTOQUE FÁCIL  v1.0.0")
+    print("             ESTOQUE FÁCIL  v1.0.0")
     print("    Controle de estoque para microempreendedores")
     print(f"{'═' * 55}\n")
 
@@ -109,7 +109,7 @@ def cmd_estoque_baixo(produtos):
 
 def cmd_valor_total(produtos):
     total = valor_total_estoque(produtos)
-    print(f"\n  💰 Valor total do estoque: R$ {total:.2f}")
+    print(f"\n  Valor total do estoque: R$ {total:.2f}")
 
 
 def main():
@@ -136,7 +136,7 @@ def main():
         elif opcao == "6":
             cmd_valor_total(produtos)
         elif opcao == "0":
-            print("\n  Até logo! 👋\n")
+            print("\n  Até logo! \n")
             sys.exit(0)
         else:
             print("\n  ❌ Opção inválida. Tente novamente.")
