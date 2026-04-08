@@ -56,16 +56,16 @@ Instalação
 **Pré-requisito:** Python 3.11 ou superior instalado.
 
 ```bash
-# 1. Clone o repositório
+# 1. Clonar o repositório
 git clone https://github.com/valentinabsoares-debug/estoque-facil.git
 cd estoque-facil
 
-# 2. (Opcional) Crie um ambiente virtual
+# 2. Criar um ambiente virtual (Opcional)
 python -m venv .venv
 source .venv/bin/activate        # Linux/macOS
 .venv\Scripts\activate           # Windows
 
-# 3. Instale as dependências de desenvolvimento
+# 3. Instalar as dependências de desenvolvimento
 pip install -r requirements.txt
 ```
 
