@@ -11,19 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout do repositório
+      - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      - name: 🐍 Configurar Python 3.11
+      - name: Configurar Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: 📦 Instalar dependências
+      - name: Instalar dependências
         run: pip install -r requirements.txt
 
-      - name: 🔍 Executar linting (Ruff)
+      - name: Executar linting (Ruff)
         run: ruff check .
 
-      - name: ✅ Executar testes (Pytest)
+      - name: Executar testes (Pytest)
         run: pytest --tb=short -v
