@@ -1,4 +1,4 @@
-# 📦 Estoque Fácil
+~ Estoque Fácil
 
 [![CI](https://github.com/valentinabsoares-debug/estoque-facil/actions/workflows/ci.yml/badge.svg)](https://github.com/valentinabsoares-debug/estoque-facil/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
@@ -7,17 +7,17 @@
 
 ---
 
-## 🎯 O Problema
+O Problema
 
 Microempreendedores — como vendedores de roupas, artesãos, revendedores e donos de pequenos comércios — frequentemente perdem o controle do próprio estoque por falta de uma ferramenta simples e gratuita. Planilhas são complexas e sistemas pagos são caros. O resultado são produtos em falta, compras desnecessárias e prejuízo financeiro.
 
-## 💡 A Solução
+A Solução
 
 **Estoque Fácil** é um aplicativo de linha de comando (CLI) gratuito, leve e sem necessidade de internet, que permite cadastrar produtos, controlar quantidades, receber alertas de estoque baixo e visualizar o valor total do estoque — tudo em segundos, diretamente no terminal.
 
 ---
 
-## 👥 Público-alvo
+Público-alvo
 
 - Vendedores autônomos e revendedores
 - Artesãos e produtores independentes
@@ -25,22 +25,22 @@ Microempreendedores — como vendedores de roupas, artesãos, revendedores e don
 
 ---
 
-## ✨ Funcionalidades
+Funcionalidades
 
 | Funcionalidade | Descrição |
 |---|---|
-| ➕ Adicionar produto | Cadastra nome, quantidade, preço e categoria |
-| 📋 Listar produtos | Exibe todos os produtos ou filtra por categoria |
-| ✏️ Atualizar quantidade | Edita a quantidade de um produto pelo ID |
-| 🗑️ Remover produto | Remove um produto do estoque |
-| ⚠️ Estoque baixo | Alerta produtos abaixo de um limite configurável |
-| 💰 Valor total | Calcula o valor total do estoque |
+| Adicionar produto | Cadastra nome, quantidade, preço e categoria |
+| Listar produtos | Exibe todos os produtos ou filtra por categoria |
+| Atualizar quantidade | Edita a quantidade de um produto pelo ID |
+| Remover produto | Remove um produto do estoque |
+| Estoque baixo | Alerta produtos abaixo de um limite configurável |
+| Valor total | Calcula o valor total do estoque |
 
 Os dados são salvos automaticamente em um arquivo `estoque.json` na pasta do projeto.
 
 ---
 
-## 🛠️ Tecnologias
+Tecnologias
 
 - **Python 3.11+** — linguagem principal
 - **Pytest** — testes automatizados
@@ -51,7 +51,7 @@ Sem dependências externas para a aplicação em si — apenas a biblioteca padr
 
 ---
 
-## ⚙️ Instalação
+Instalação
 
 **Pré-requisito:** Python 3.11 ou superior instalado.
 
@@ -71,7 +71,7 @@ pip install -r requirements.txt
 
 ---
 
-## ▶️ Execução
+Execução
 
 ```bash
 python main.py
@@ -81,7 +81,7 @@ Você verá o menu interativo:
 
 ```
 ═══════════════════════════════════════════════════════
-         📦  ESTOQUE FÁCIL  v1.0.0
+             ESTOQUE FÁCIL  v1.0.0
     Controle de estoque para microempreendedores
 ═══════════════════════════════════════════════════════
 
@@ -99,7 +99,7 @@ Você verá o menu interativo:
 
 ---
 
-## 🧪 Rodando os Testes
+Rodando os Testes
 
 ```bash
 pytest -v
@@ -117,7 +117,7 @@ tests/test_estoque.py::TestAdicionarProduto::test_quantidade_negativa_levanta_er
 
 ---
 
-## 🔍 Rodando o Lint
+Rodando o Lint
 
 ```bash
 ruff check .
@@ -131,7 +131,7 @@ ruff check . --fix
 
 ---
 
-## 📁 Estrutura do Projeto
+Estrutura do Projeto
 
 ```
 estoque-facil/
@@ -155,7 +155,7 @@ estoque-facil/
 
 ---
 
-## 🔄 Pipeline CI (GitHub Actions)
+Pipeline CI (GitHub Actions)
 
 A cada `push` ou `pull request` para a branch `main`, a pipeline executa automaticamente:
 
@@ -167,20 +167,20 @@ A cada `push` ou `pull request` para a branch `main`, a pipeline executa automat
 
 ---
 
-## 📌 Versão
+Versão
 
 **1.0.0** — Consulte o [CHANGELOG.md](CHANGELOG.md) para o histórico de mudanças.
 
 ---
 
-## 👤 Autor
+Autor
 
-**Seu Nome**
+**Valentina B. Soares**
 - GitHub: [@valentinabsoares-debug](https://github.com/valentinabsoares-debug)
 
 ---
 
-## 🔗 Repositório
+Repositório
 
 [https://github.com/valentinabsoares-debug/estoque-facil](https://github.com/valentinabsoares-debug/estoque-facil)
 
