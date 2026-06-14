@@ -1,3 +1,7 @@
 git checkout main
 git pull
 git checkout -b feature/supabase-connection
+
+git add .
+git commit -m "feat: conexão com Supabase e models de produto"
+git push origin feature/supabase-connection
