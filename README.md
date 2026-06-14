@@ -196,7 +196,7 @@ Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICEN
 Aplicação de controle de estoque com API REST em Flask e banco de dados PostgreSQL via Supabase.
 
 ## 👤 Integrante
-- Seu Nome Completo — Matrícula XXXXXX
+- Valentina B. Soares — Matrícula 22507363
 
 ## 🛠️ Stack
 - Python 3.11 + Flask
