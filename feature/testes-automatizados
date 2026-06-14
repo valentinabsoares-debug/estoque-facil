@@ -1,0 +1,7 @@
+git checkout main
+git pull
+git checkout -b feature/testes-automatizados
+
+git add .
+git commit -m "test: testes automatizados com pytest e mocks"
+git push origin feature/testes-automatizados
