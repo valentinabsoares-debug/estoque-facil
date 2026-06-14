@@ -1,0 +1,7 @@
+git checkout main
+git pull
+git checkout -b docs/readme-final
+
+git add README.md
+git commit -m "docs: README final com stack, endpoints e instruções"
+git push origin docs/readme-final
