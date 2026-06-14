@@ -1,0 +1,9 @@
+## O que foi feito
+- Criado app Flask com factory pattern (create_app)
+- Adicionado run.py como ponto de entrada
+- Listadas todas as dependências no requirements.txt
+
+## Como testar
+- pip install -r requirements.txt
+- python run.py
+- Acessar http://localhost:5000
