@@ -1,0 +1,4 @@
+# No terminal, dentro da pasta do projeto:
+git checkout main
+git pull
+git checkout -b feature/flask-base
