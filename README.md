@@ -189,3 +189,39 @@ Repositório
 ## 📄 Licença
 
 Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+
+# 📦 Estoque Fácil
+
+Aplicação de controle de estoque com API REST em Flask e banco de dados PostgreSQL via Supabase.
+
+## 👤 Integrante
+- Seu Nome Completo — Matrícula XXXXXX
+
+## 🛠️ Stack
+- Python 3.11 + Flask
+- Supabase (PostgreSQL)
+- pytest
+- GitHub Actions (CI)
+- Render (Deploy)
+
+## 🔗 Links
+- **Repositório:** https://github.com/seu-usuario/estoque-facil
+- **Deploy:** https://estoque-facil.onrender.com
+
+## ▶️ Como rodar localmente
+1. Clone o repositório
+2. Crie um arquivo `.env` com `SUPABASE_URL` e `SUPABASE_KEY`
+3. `pip install -r requirements.txt`
+4. `python run.py`
+
+## 📡 Endpoints
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | /produtos | Lista todos os produtos |
+| POST | /produtos | Cadastra novo produto |
+| GET | /produtos/:id | Busca produto por ID |
+| PATCH | /produtos/:id/quantidade | Atualiza quantidade |
+| DELETE | /produtos/:id | Remove produto |
+| GET | /alertas/estoque-baixo | Produtos abaixo do mínimo |
+| GET | /relatorio/valor-total | Valor total do estoque |
