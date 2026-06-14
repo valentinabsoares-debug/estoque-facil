@@ -1,2 +1,8 @@
 pytest>=8.0
 ruff>=0.4
+flask
+supabase
+pytest
+pytest-flask
+python-dotenv
+gunicorn
