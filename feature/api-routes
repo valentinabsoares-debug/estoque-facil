@@ -1,0 +1,7 @@
+git checkout main
+git pull
+git checkout -b feature/api-routes
+
+git add .
+git commit -m "feat: endpoints REST para controle de estoque"
+git push origin feature/api-routes
