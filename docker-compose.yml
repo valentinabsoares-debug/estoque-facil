@@ -1,0 +1,47 @@
+# Sobe a aplicação + banco de dados.
+#   Local (build a partir do código):  docker compose up -d --build
+#   Deploy (imagem do registry):       APP_VERSION=1.2.3 docker compose up -d --no-build
+# Credenciais vêm do arquivo .env (copie de .env.example) ou de variáveis do CI/CD.
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sgctechfix-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-sgctechfix}
+      POSTGRES_USER: ${DB_USER:?defina DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # Executado só na primeira criação do volume
+      - ./sql/script_criação.sql:/docker-entrypoint-initdb.d/01-script.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    image: ${IMAGE_NAME:-ghcr.io/owner/repo}:${APP_VERSION:-latest}
+    build:
+      context: .
+      args:
+        APP_VERSION: ${APP_VERSION:-dev}
+    container_name: sgctechfix-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      # O Spring converte SPRING_DATASOURCE_URL -> spring.datasource.url automaticamente
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME:-sgctechfix}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      # Ajuste o nome se no application.properties a chave for diferente de jwt.secret
+      JWT_SECRET: ${JWT_SECRET:?defina JWT_SECRET}
+
+volumes:
+  db-data:
