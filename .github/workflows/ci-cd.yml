@@ -1,0 +1,156 @@
+name: CI/CD
+
+# - Pull request: só build + testes
+# - Push na main: build + testes, publica imagem no GHCR (tag sha-xxxxxxx) e faz deploy em homologação
+# - Tag vX.Y.Z: igual à main, com imagem versionada (X.Y.Z, X.Y, latest) e GitHub Release
+# - Manual (workflow_dispatch): rollback para uma versão informada
+on:
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      rollback_version:
+        description: "Versão para rollback em homologação (ex: 1.0.0). Vazio = não faz nada."
+        required: false
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-test:
+    name: Build e testes
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - run: mvn -B verify
+
+  publish-image:
+    name: Publicar imagem no GHCR
+    runs-on: ubuntu-latest
+    needs: build-test
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }} # token automático do GitHub, não é segredo do repo
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,format=short
+            type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: APP_VERSION=${{ steps.meta.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-homologacao:
+    name: Deploy em homologação (simulado)
+    runs-on: ubuntu-latest
+    needs: publish-image
+    if: github.event_name == 'push'
+    environment: homologacao # segredos do environment: DB_USER, DB_PASSWORD, JWT_SECRET
+    permissions:
+      contents: read
+      packages: read
+    env:
+      DB_NAME: sgctechfix
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # precisa das tags para achar a versão anterior
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Definir versão nova e versão anterior (alvo do rollback)
+        run: |
+          echo "IMAGE_NAME=${REGISTRY}/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            NEW="${GITHUB_REF_NAME#v}"
+            PREV=$(git tag -l 'v*.*.*' --sort=-v:refname | grep -vx "$GITHUB_REF_NAME" | head -n1 || true)
+          else
+            NEW="sha-$(git rev-parse --short=7 HEAD)"
+            PREV=$(git tag -l 'v*.*.*' --sort=-v:refname | head -n1 || true)
+          fi
+          echo "NEW_VERSION=$NEW" >> "$GITHUB_ENV"
+          echo "PREV_VERSION=${PREV#v}" >> "$GITHUB_ENV"
+          echo "Deploy: $NEW | versão anterior estável: ${PREV#v}"
+      - name: Deploy com health check e rollback automático
+        run: ./scripts/deploy.sh "$NEW_VERSION" "$PREV_VERSION"
+      - name: Resumo
+        if: always()
+        run: |
+          {
+            echo "### Deploy em homologação"
+            echo "- Versão: \`$NEW_VERSION\`"
+            echo "- Versão anterior (rollback): \`${PREV_VERSION:-nenhuma}\`"
+            echo "- Resultado: ${{ job.status }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  release:
+    name: GitHub Release
+    runs-on: ubuntu-latest
+    needs: deploy-homologacao
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: gh release create "$GITHUB_REF_NAME" --generate-notes --title "$GITHUB_REF_NAME"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  rollback-manual:
+    name: Rollback manual em homologação
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && inputs.rollback_version != ''
+    environment: homologacao
+    permissions:
+      contents: read
+      packages: read
+    env:
+      DB_NAME: sgctechfix
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          export IMAGE_NAME="${REGISTRY}/${GITHUB_REPOSITORY,,}"
+          ./scripts/rollback.sh "${{ inputs.rollback_version }}"
