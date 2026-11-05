@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+estoque.json
+# Segredos: nunca versionar
+.env
+.env.*
+!.env.example

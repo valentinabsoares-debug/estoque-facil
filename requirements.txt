@@ -1,8 +1,6 @@
+-r requirements-prod.txt
 pytest>=8.0
-ruff>=0.4
-flask
-supabase
-pytest
 pytest-flask
-python-dotenv
-gunicorn
+ruff>=0.4
+responses>=0.25.0
+requests>=2.31.0
