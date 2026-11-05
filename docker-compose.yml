@@ -1,0 +1,20 @@
+# Sobe a API Estoque Fácil.
+#   Local (build do código):   docker compose up -d --build
+#   Deploy (imagem do GHCR):   APP_VERSION=1.0.0 docker compose up -d --no-build
+# O banco é o Supabase (PostgreSQL gerenciado, na nuvem): a conexão vem de
+# SUPABASE_URL / SUPABASE_KEY, definidos no arquivo .env ou nos Secrets do CI/CD.
+
+services:
+  app:
+    image: ${IMAGE_NAME:-ghcr.io/valentinabsoares-debug/estoque-facil}:${APP_VERSION:-latest}
+    build:
+      context: .
+      args:
+        APP_VERSION: ${APP_VERSION:-dev}
+    container_name: estoque-facil-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-5000}:5000"
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL:?defina SUPABASE_URL}
+      SUPABASE_KEY: ${SUPABASE_KEY:?defina SUPABASE_KEY}

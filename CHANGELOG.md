@@ -7,6 +7,23 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [Unreleased]
+
+### Adicionado
+- Dockerfile multi-stage (gunicorn, usuário não-root, healthcheck) e `docker-compose.yml`
+- Rota `GET /health`
+- Pipeline de CD: imagem no GHCR com versionamento semântico, deploy em homologação, rollback automático e manual
+- Gestão de segredos via GitHub Secrets e `.env.example`
+
+### Corrigido
+- `app/_init_.py` → `app/__init__.py` e `app/routs.py` → `app/routes.py` (a API não importava)
+- `requirements.txt` sem duplicatas; dependências de produção em `requirements-prod.txt`
+
+### Removido
+- Workflows duplicados (`ci-.yml` e `ci.yml` da raiz), unificados em `.github/workflows/ci.yml`
+
+---
+
 ## [1.0.0] - 2025-01-01
 
 ### Adicionado
